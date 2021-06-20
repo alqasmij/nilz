@@ -42,7 +42,8 @@ class _WebViewExampleState extends State<WebViewExample> {
         home:Directionality(
         textDirection: TextDirection.rtl, // set this property
         child: Scaffold(
-        appBar: AppBar(
+          resizeToAvoidBottomInset : false ,
+          appBar: AppBar(
         centerTitle: true,
         backgroundColor: Color(0xff7e57c2),
         // This drop down menu demonstrates that Flutter widgets can be shown over the web view.
