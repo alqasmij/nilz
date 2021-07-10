@@ -2,9 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
 import 'drawer.dart';
-import 'home.dart';
 
 
 class WebViewExample extends StatefulWidget {
@@ -34,6 +32,8 @@ class _WebViewExampleState extends State<WebViewExample> {
     super.initState();
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
   }
+  final _key = UniqueKey();
+  bool isLoading=true;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +58,10 @@ class _WebViewExampleState extends State<WebViewExample> {
       body: Builder(builder: (BuildContext context) {
         return WillPopScope(
             onWillPop: () async => false,
-          child: WebView(
+          child: Stack(
+          children: <Widget>[
+          WebView(
+            key: _key,
             initialUrl: Url,
             javascriptMode: JavascriptMode.unrestricted,
             onWebViewCreated: (WebViewController webViewController) {
@@ -69,20 +72,27 @@ class _WebViewExampleState extends State<WebViewExample> {
             },
             navigationDelegate: (NavigationRequest request) {
               if (request.url.startsWith('https://www.youtube.com/')) {
-                print('blocking navigation to $request}');
                 return NavigationDecision.prevent;
               }
-              print('allowing navigation to $request');
               return NavigationDecision.navigate;
             },
             onPageStarted: (String url) {
-              print('Page started loading: $url');
+              setState(() {
+                isLoading = true;
+              });
             },
             onPageFinished: (String url) {
-              print('Page finished loading: $url');
+              setState(() {
+                isLoading = false;
+              });
             },
             gestureNavigationEnabled: true,
-        ));
+        ),
+            isLoading ? Center( child: CircularProgressIndicator(),)
+                : Stack(),
+        ],
+          ),
+        );
       }),
     )
         )
@@ -118,7 +128,7 @@ class NavigationControls extends StatelessWidget {
                 } else {
                   // ignore: deprecated_member_use
                   Scaffold.of(context).showSnackBar(
-                    const SnackBar(content: Text("لايوجد اي تنقلات للخلف")),
+                    const SnackBar(content: Text("لا يوجد اي تنقلات للخلف")),
                   );
                   return;
                 }
@@ -135,21 +145,19 @@ class NavigationControls extends StatelessWidget {
                   // ignore: deprecated_member_use
                   Scaffold.of(context).showSnackBar(
                     const SnackBar(
-                        content: Text("لايوجد اي تنقلات للأمام")),
+                        content: Text("لا يوجد اي تنقلات للأمام")),
                   );
                   return;
                 }
               },
             ),
             IconButton(
-              icon: const Icon(Icons.home),
+              icon: const Icon(Icons.replay),
               onPressed: !webViewReady
-                  ? null
-                  : () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Home()));
-              },
+                ? null
+                    : () {
+                controller.reload();
+                },
             ),
           ],
         );

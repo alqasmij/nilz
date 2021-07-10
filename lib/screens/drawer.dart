@@ -29,7 +29,7 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => WebViewExample(map['t01'],map['u01'])));
+                  MaterialPageRoute(builder: (context) => WebViewExample(appName,map['u01'])));
             },
           ),
           ListTile(
@@ -38,7 +38,7 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => WebViewExample(map['t02'],map['u02'])));
+                  MaterialPageRoute(builder: (context) => WebViewExample(appName,map['u02'])));
             },
           ),
           ListTile(
@@ -47,7 +47,7 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => WebViewExample(map['t03'],map['u03'])));
+                  MaterialPageRoute(builder: (context) => WebViewExample(appName,map['u03'])));
             },
           ),
           ListTile(
@@ -56,7 +56,7 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => WebViewExample(map['t04'],map['u04'])));
+                  MaterialPageRoute(builder: (context) => WebViewExample(appName,map['u04'])));
             },
           ),
           Divider(
@@ -68,7 +68,7 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => WebViewExample(map['t05'],map['u05'])));
+                  MaterialPageRoute(builder: (context) => WebViewExample(appName,map['u05'])));
             },
           ),
           ListTile(
@@ -77,7 +77,7 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => WebViewExample(map['t06'],map['u06'])));
+                  MaterialPageRoute(builder: (context) => WebViewExample(appName,map['u06'])));
             },
           ),
           ListTile(
@@ -86,7 +86,7 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => WebViewExample(map['t07'],map['u07'])));
+                  MaterialPageRoute(builder: (context) => WebViewExample(appName,map['u07'])));
             },
           ),
           Divider(
@@ -98,7 +98,7 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => WebViewExample(map['t08'],map['u08'])));
+                  MaterialPageRoute(builder: (context) => WebViewExample(appName,map['u08'])));
             },
           ),
           ListTile(
@@ -107,7 +107,7 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => WebViewExample(map['t09'],map['u09'])));
+                  MaterialPageRoute(builder: (context) => WebViewExample(appName,map['u09'])));
             },
           ),
         ],

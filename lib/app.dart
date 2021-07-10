@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'screens/home.dart';
+import 'package:nilzstore/screens/web_view_container.dart';
+import 'package:nilzstore/helpers.dart';
 
 class App extends StatelessWidget {
   @override
@@ -14,8 +15,7 @@ class App extends StatelessWidget {
         } else {
           // Loading is done, return the app:
           return MaterialApp(debugShowCheckedModeBanner: false,
-            home: Scaffold(body: Center(child: Home())),
-          );
+            home: WebViewExample(map['t10'],map['u10']));
         }
       },
     );
