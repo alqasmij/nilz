@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'drawer.dart';
 
-
 class WebViewExample extends StatefulWidget {
   var UrName;
 
@@ -18,6 +17,8 @@ class WebViewExample extends StatefulWidget {
 }
 
 final WillPopCallback onWillPop = () {return Future.value(false);};
+  bool isDisable= true;
+
 
 class _WebViewExampleState extends State<WebViewExample> {
   final Completer<WebViewController> _controller =
@@ -26,14 +27,17 @@ class _WebViewExampleState extends State<WebViewExample> {
   var Url;
 
   _WebViewExampleState(this.name, this.Url);
-
   @override
   void initState() {
     super.initState();
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
   }
+
   final _key = UniqueKey();
-  bool isLoading=true;
+  bool isLoading = true;
+  bool progressChanged = false;
+  Color  appBarColor = Color(0xff7e57c2);
+
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +49,7 @@ class _WebViewExampleState extends State<WebViewExample> {
           resizeToAvoidBottomInset : false ,
           appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Color(0xff7e57c2),
-        // This drop down menu demonstrates that Flutter widgets can be shown over the web view.
+        backgroundColor: appBarColor ,
         actions: <Widget>[
           NavigationControls(_controller.future),
         ],
@@ -67,28 +70,47 @@ class _WebViewExampleState extends State<WebViewExample> {
             onWebViewCreated: (WebViewController webViewController) {
               _controller.complete(webViewController);
             },
-            onProgress: (int progress) {
-              print("WebView is loading (progress : $progress%)");
-            },
             navigationDelegate: (NavigationRequest request) {
               if (request.url.startsWith('https://www.youtube.com/')) {
                 return NavigationDecision.prevent;
               }
+              else setState(() {
+                isLoading = true;
+                isDisable = true;
+              });
               return NavigationDecision.navigate;
             },
             onPageStarted: (String url) {
-              setState(() {
-                isLoading = true;
-              });
+              print('start');
             },
             onPageFinished: (String url) {
               setState(() {
                 isLoading = false;
+                isDisable = false;
               });
             },
+
             gestureNavigationEnabled: true,
+
         ),
-            isLoading ? Center( child: CircularProgressIndicator(),)
+            isLoading ? Center( child: Align(
+              alignment: Alignment.topCenter,
+              child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  return Container(
+                    height: constraints.maxHeight,
+                    width: constraints.maxWidth,
+                    color: Color(0xFF0E3311).withOpacity(0.3),
+                    child: Container(
+                      height: 40,
+                        child: Image.asset(
+                          "images/Loading (2).gif",height: constraints.maxHeight / 4,width: 5,)
+                    ),
+                  );
+                },
+              ),
+            ),
+            )
                 : Stack(),
         ],
           ),
@@ -98,8 +120,9 @@ class _WebViewExampleState extends State<WebViewExample> {
         )
     );
   }
-
 }
+
+
 
 class NavigationControls extends StatelessWidget {
   const NavigationControls(this._webViewControllerFuture)
@@ -136,9 +159,7 @@ class NavigationControls extends StatelessWidget {
             ),
             IconButton(
               icon: const Icon(Icons.arrow_forward_ios),
-              onPressed: !webViewReady
-                  ? null
-                  : () async {
+              onPressed: !webViewReady ? null : () async {
                 if (await controller.canGoForward()) {
                   await controller.goForward();
                 } else {
@@ -153,9 +174,7 @@ class NavigationControls extends StatelessWidget {
             ),
             IconButton(
               icon: const Icon(Icons.replay),
-              onPressed: !webViewReady
-                ? null
-                    : () {
+              onPressed: isDisable ? null : () {
                 controller.reload();
                 },
             ),
